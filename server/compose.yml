@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  # go-app:
+  #   container_name: go-app
+  #   image: golang:latest
+  #   restart: unless-stopped
+  #   working_dir: /go/src/app
+  #   volumes:
+  #     - ./:/go/src/app
+  #   ports:
+  #     - '8000:8000'
+  #   depends_on:
+  #     - go-db
+
+  go-db:
+    container_name: go-db
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - ${DATABASE_PORT:-5432}:5432
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-postgres}
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
